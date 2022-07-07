@@ -28,7 +28,7 @@ def kakao_redirect(request):
     res = {
             'grant_type': 'authorization_code',
             'client_id': SOCIAL_OUTH_CONFIG["KAKAO_REST_API_KEY"],
-            'redirect_url': 'http://localhost:3000/oauth/kakao/callback',
+            'redirect_url': 'https://whatisyourword/api/v1/oauth/kakao/callback',
             'client_secret': SOCIAL_OUTH_CONFIG["KAKAO_SECRET_KEY"],
             'code': CODE
        }
@@ -87,60 +87,3 @@ def kakao_logout(request):
     tmp = requests.post(url, headers=HEADER).json()
     Token.objects.filter(key=request.data.get('token')).delete()
     return Response('진짜 끝났다 고생했어')
-
-
-@api_view(['GET'])
-@permission_classes([AllowAny, ])
-def google_get_login(request):
-    CLIENT_ID = SOCIAL_OUTH_CONFIG['GOOGLE_CLIENT_ID']
-    REDIRECT_URL = 'http://127.0.0.1:8000/accounts/google/login/callback/'
-
-    # scope 설정 (어떤 데이터를 받고 싶은지를 scope를 통해 설정)
-    url = 'https://accounts.google.com/o/oauth2/auth?client_id={0}&redirect_uri={1}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.profile'.format(CLIENT_ID, REDIRECT_URL)
-    return (redirect(url))
-
-
-@api_view(['GET'])
-@permission_classes([AllowAny, ])
-def google_get_user_info(request):
-    CODE = request.query_params['code']
-
-    url = "https://oauth2.googleapis.com/token"
-    res = {
-        'grant_type': 'authorization_code',
-        'code': CODE,
-        'client_id': SOCIAL_OUTH_CONFIG['GOOGLE_CLIENT_ID'],
-        'client_secret': SOCIAL_OUTH_CONFIG['GOOGLE_CLIENT_SECRET'],
-        'redirect_uri': 'http://127.0.0.1:8000/accounts/google/login/callback/'
-    }
-    headers = {
-        'Content-type': 'application/x-www-form-urlencoded;charset=utf-8'
-    }
-    response = requests.post(url, data=res, headers=headers)
-    tokenJson = response.json()
-    print('token Json = ', tokenJson)
-    userUrl = 'https://www.googleapis.com/oauth2/v2/userinfo?'
-    
-    auth = "Bearer "+tokenJson['access_token']
-    HEADER = {
-        "Authorization": auth,
-        "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
-    }
-    user = requests.get(userUrl, headers=HEADER).json()
-    print('유저!! = ', user)
-
-    nickname = user.get('name')
-    social = 'google'
-
-    django_user = User.objects.filter(username=nickname).first()
-
-    if django_user is None:
-        django_user = User.objects.create(username=nickname, social=social)
-        django_user.set_unusable_password()
-        django_user.save()
-
-        token = Token.objects.create(user=django_user)
-        return Response({'key': token.key})
-    else:
-        token = Token.objects.create(user=django_user)
-        return Response({'key': token.key})

@@ -6,5 +6,4 @@ urlpatterns = [
     path('api/v1/kakao/logout/', views.kakao_logout),
 
     path('api/v1/kakao/redirect/', views.kakao_redirect),
-    path('api/v1/google/login/', views.google_get_login),
 ]

@@ -19,47 +19,8 @@ def index(request):
         serializer = WordListSerializer(tmp_words, many=True)  # JSON 형태로 응답 보내기 위해 serializer로 바꿔주기
         data = serializer.data  # -> 해당 유저가 검색했던 단어들 JSON
         
-
-        # '''
-        # 가장 많이 검색 된 단어 (최대 10개)
-        # '''
-        # q = Word.objects.annotate(Count('user')).order_by('-user__count')
-        # # q[i].name
-        # # count값은 q[i].user__count 로 출력 가능
-        # num_words = len(q)
-
-        # target_words_idx = []
-
-        # for word in data:
-        #     target_words_idx.append(word.get('id'))  # 유저가 검색했던 단어들 id들
-        # for i in range(min(num_words, 10)):
-        #     print(q[i].id)
-        #     target_words_idx.append(q[i].id)  # 젤 많이 검색됐던 단어들 id들, 최대10개 
-        
         result = []
-        # print('a',target_words_idx)
-        # for idx in target_words_idx:
-        #     tmp = dict()
-        #     tmp_word = Word.objects.filter(id=idx)
-        #     word_serializer = WordListSerializer(tmp_word)
-        #     print(55555555)
-        #     print('시리얼 먹고 싶다',word_serializer)
-        #     word_data = word_serializer.data
-        #     print('요기..?')
-        #     print('wd', word_data)
-        #     print('요거')
-        #     tmp['name'] = word_data.get('name')
-        #     print(66666666)
-        #     tmp['meaning'] = word_data.get('meaning')
-
-        #     tmp_image = Image.objects.filter(word=idx, user=user.pk)
-        #     image_serializer = ImageSerializer(tmp_image)
-        #     image_data = image_serializer.data
-
-        #     tmp['image_path'] = image_data.get('image_path')
-
-        #     result.append(tmp)
-
+        
         for word in data:  # -> 단어를 한 개씩 보겠다 (word type = dictionary)
             tmp_image = Image.objects.filter(word=word['id'], user=user.pk)  # 해당 유저 & 해당 단어에 연결되는 image
             image_serializer = ImageSerializer(tmp_image[0])  # 의 JSON (한 개) (dictionary)

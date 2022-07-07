@@ -4,7 +4,7 @@ import axios from 'axios'
 
 export default function Kakao() {
   const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY
-  const REDIRECT_URI = "https://62c6e048f84c251b3ab4c048--comforting-klepon-944419.netlify.app/"
+  const REDIRECT_URI = "https://whatisyourword.link/api/v1/oauth/kakao/callback"
   const LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`
   return (
     <div>
