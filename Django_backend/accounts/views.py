@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from backend.settings import SOCIAL_OUTH_CONFIG
 from rest_framework.decorators import api_view, permission_classes
@@ -7,7 +6,6 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 import requests
 from .models import User
-from pprint import pprint
 
 
 @api_view(['GET'])

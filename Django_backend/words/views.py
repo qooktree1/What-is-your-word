@@ -81,14 +81,6 @@ def index(request):
         word = get_object_or_404(Word, name=request.data['name'])
         word.user.remove(user)
         return Response('삭제!')
-    '''
-    1. 1번 유저가 1번 단어를 1번 이미지랑 저장을 했다가
-    2. 1번 단어를 지우고 싶다
-    3. 단어 -> Word table에서 지우는게 아니라 중계테이블 값을 지워야 함
-    4. 또 어떤 문제가
-    5. 예를 들어 apple을 1, 2번 유저가 검색했는데 1번 유저가 삭제를 했어요
-        근데 2번 유저도 삭제를 하면은 이제는 apple도 word테이블에서 지워야해요
-    '''
 
     if request.method == 'GET':
         return get_words()
