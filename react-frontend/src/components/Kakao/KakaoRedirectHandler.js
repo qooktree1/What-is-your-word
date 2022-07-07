@@ -5,7 +5,7 @@ export default function KakaoRedirectHandler() {
   useEffect(() => {
       axios({
         method: 'POST',
-        url: 'https://whatisyourword.link/api/v1/accounts/kakao/redirect/',
+        url: 'https://62c6f5f3c4b7f630229af278--fanciful-yeot-d9575e.netlify.app/',
         data: code,
       })
         .then(res => {
@@ -17,7 +17,6 @@ export default function KakaoRedirectHandler() {
           console.log(access)
           window.location.replace('/')
         })
-
       }, [])
   return null
 }
