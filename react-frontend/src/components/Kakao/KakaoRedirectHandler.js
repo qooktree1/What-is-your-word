@@ -2,7 +2,6 @@ import axios from 'axios'
 import { useEffect } from 'react'
 export default function KakaoRedirectHandler() {
   const code = new URL(window.location.href).searchParams.get("code")
-  console.log(2)
   console.log('cide', code)
   useEffect(() => {
       axios({

@@ -108,6 +108,7 @@ export default function MainImage() {
         <Container maxWidth={false} style={{paddingLeft:"70px", paddingRight:"70px"}}>
           <Box>
             <Masonry columns={matchDownSm ? 1 : matchDownMd ? 2 : matchDownLg ? 3 : matchDownXl ? 4 : 6} spacing={2} sx={{margin: '0px'}}>
+              {console.log('w',wordsList)}
               {wordsList.map((item, index) => (
                 <div key={index} className={'flip-card'} tabIndex="0">
                   <div className={'flip-card-inner'}>
