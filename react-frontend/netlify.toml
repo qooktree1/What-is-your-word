@@ -1,0 +1,4 @@
+[[redirects]]
+from = "/*"
+to = "/https://whatisyourword.netlify.app/oauth/kakao/callback"
+status = 200
