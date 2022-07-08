@@ -49,6 +49,7 @@ export default function MainImage() {
       }
     })
       .then(res => {
+        console.log('res', res)
         setWordsList(res.data)
       })
   },[imgClickCount])
