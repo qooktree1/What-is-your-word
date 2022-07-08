@@ -1,12 +1,10 @@
-import { useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
 
 
 export default function Kakao() {
   const REST_API_KEY = process.env.REACT_APP_KAKAO_API_KEY
-  const REDIRECT_URI = "https://whatisyourword.netlify.app/oauth/kakao/callback"
+  const REDIRECT_URI = "https://whatisyourword.link/oauth/kakao/callback"
   const LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`
-  console.log(1)
   return (
     <div>
     
