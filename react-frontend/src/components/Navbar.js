@@ -16,7 +16,7 @@ import Settings from '@mui/icons-material/Settings'
 import Logout from '@mui/icons-material/Logout'
 import Grid from '@mui/material/Grid'
 import Searchbar from './Searchbar'
-import axios from 'axios';
+import axios from 'axios'
 
 const IMAGE_API_KEY = "28260950-c1f3d2ca9f40aff3e600ab72f"
 

@@ -43,7 +43,7 @@ export default function MainImage() {
     const token = localStorage.getItem('token')
     axios({
       method: 'get',
-      url: 'https://whatisyourword.link/api/v1/words/',
+      url: 'http://127.0.0.1:8000/words/',
       headers: {
         "Authorization": "Token " + token 
       }
@@ -86,7 +86,7 @@ export default function MainImage() {
 
     axios({
       method: 'delete',
-      url: 'https://whatisyourword.link/api/v1/words/',
+      url: 'http://127.0.0.1:8000/words/',
       headers: {
         "Authorization": "Token " + token 
       },

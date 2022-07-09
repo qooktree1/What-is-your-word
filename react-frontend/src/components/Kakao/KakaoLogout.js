@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 function Logout() {
   axios({
     method: 'post',
-    url: 'https://whatisyourword.link/api/v1/accounts/kakao/logout/',
+    url: 'http://localhost:8000/accounts/kakao/logout/',
     data: allData,
   })
     .then(res => {

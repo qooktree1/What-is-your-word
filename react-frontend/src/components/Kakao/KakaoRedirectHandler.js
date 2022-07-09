@@ -2,11 +2,10 @@ import axios from 'axios'
 import { useEffect } from 'react'
 export default function KakaoRedirectHandler() {
   const code = new URL(window.location.href).searchParams.get("code")
-  console.log('cide', code)
   useEffect(() => {
       axios({
         method: 'POST',
-        url: 'https://whatisyourword.link/api/v1/accounts/kakao/redirect/',
+        url: 'http://localhost:8000/accounts/kakao/redirect/',
         data: code,
       })
         .then(res => {
