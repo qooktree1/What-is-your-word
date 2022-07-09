@@ -5,7 +5,6 @@ export default function Kakao() {
   console.log(REST_API_KEY)
   return (
     <div>
-    
       <a href={LOGIN_URL}><img src="img/kakao_login_medium.png" alt="카카오 로그인" /></a>
     </div>
   )

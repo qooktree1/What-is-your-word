@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Mainpage from "./components/Mainpage"
+import Mainpage from "./components/Mainpage/Mainpage"
 
-import KakaoRedirectHandler from './components/Kakao/KakaoRedirectHandler'
+import KakaoRedirectHandler from "./components/Kakao/KakaoRedirectHandler"
 
 export default function App() {
 
