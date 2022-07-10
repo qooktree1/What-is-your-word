@@ -93,13 +93,6 @@ export default function Navbar() {
               <Avatar /> {nickname} <b>님</b>
             </MenuItem>
             <Divider />
-
-            <MenuItem>
-              <ListItemIcon>
-                <Settings fontSize="small" />
-              </ListItemIcon>
-              Settings
-            </MenuItem>
             <MenuItem>
               <ListItemIcon>
                 <Logout fontSize="small" />

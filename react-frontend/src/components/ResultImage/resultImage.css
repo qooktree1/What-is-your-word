@@ -48,10 +48,12 @@
 .result-img-group:hover .result-img-group-overlay {
   display: block;
   background: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+
 }
 
 .result-img-group:hover .result-img-group-save {
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .result-img-group-save {

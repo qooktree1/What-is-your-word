@@ -7,23 +7,25 @@ import { resultPicture, resultDefinition, resultWord } from "../../stateSlice/im
 import SearchIcon from "@mui/icons-material/Search"
 import { Button } from "@mui/material"
 
+import Swal from 'sweetalert2'
+
 // Pexel API
-const PEXELS_IMAGE_API_KEY = process.env.REACT_APP_IMAGE_API_KEY
+const PEXELS_IMAGE_API_KEY = process.env.REACT_APP_IMAGE_API_KEY_2 
 
 export default function Searchbar() {
   const selectedWord = useSelector(state => state.img.resultWord)
+  const selectedPicture = useSelector(state => state.img.resultPicture)
+
   const dispatch = useDispatch()
 
   const onChange = e => {
     e.preventDefault()
     dispatch(resultWord(e.target.value))
   }
-  useEffect(() => {
-    dispatch(resultPicture([]))
-  }, [])
 
   const searchImg = e => {
     e.preventDefault()
+    dispatch(resultDefinition(null))
 
     // pexels
     axios({
@@ -36,28 +38,34 @@ export default function Searchbar() {
     })
       .then(res => {
         const images = res.data.photos
-        console.log(images)
         const fullUrl = []
         for (let i = 0; i < images.length; i++) {
           fullUrl.push(images[i].src.original)
         }
-        if (selectedWord) {
-          dispatch(resultPicture(fullUrl))
-        } else {
-          dispatch(resultPicture([]))
-        }
-      })
+        dispatch(resultPicture(fullUrl))
 
-    axios({
-      method: "get",
-      url: `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedWord}`,
-    })
-      .then(res => {
-        dispatch(resultDefinition(res.data[0].meanings[0].definitions[0].definition))
-        }
-      )
-      .catch(
-        dispatch(resultDefinition("검색 결과가 없습니다."))
+        axios({
+          method: "get",
+          url: `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedWord}`,
+        })
+          .then(res => {
+            dispatch(resultDefinition(res.data[0].meanings[0].definitions[0].definition))
+            }
+          )
+          .catch(err => {
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: '검색결과가 없습니다.',
+            })
+          })
+      })
+      .catch(err =>
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: '검색결과가 없습니다.',
+        })
       )
   }
 

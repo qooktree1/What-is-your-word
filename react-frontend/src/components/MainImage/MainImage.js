@@ -13,6 +13,7 @@ import Masonry from "@mui/lab/Masonry"
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos"
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew"
 import HighlightOffIcon from "@mui/icons-material/HighlightOff"
+import Swal from 'sweetalert2'
 
 const theme = createTheme({
   breakpoints: {
@@ -65,39 +66,43 @@ export default function MainImage() {
   }
   
   // 삭제
-  const [del, setDel] = useState(false)
-  const [delWord, setDelWord] = useState('')
-  const deleteConfirm = e => {
-    setDelWord(e)
-    setDel(true)
-  }
-
-  const deleteConfirmClose = () => {
-      setDelWord("")
-      setDel(false)
-  }
-
-
-  // 삭제
   const wordDelete = e => { // e= item.word
-    const token = localStorage.getItem("token")
 
-    axios({
-      method: "delete",
-      url: "http://127.0.0.1:8000/words/",
-      headers: {
-        "Authorization": "Token " + token 
-      },
-      data: {
-        "name": e
-      },
-    })
-      .then(res => {
-        dispatch(click())
-        deleteConfirmClose()
-      })
+    Swal.fire({
+      title: "Are you sure?",
+      text: "단어를 정말 삭제하시겠습니까?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#8a8a8a',
+      confirmButtonText: '삭제',
+      allowEnterKey: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        const token = localStorage.getItem("token")
+
+        axios({
+          method: "delete",
+          url: "http://127.0.0.1:8000/words/",
+          headers: {
+            "Authorization": "Token " + token 
+          },
+          data: {
+            "name": e
+          },
+        })
+          .then(res => {
+            dispatch(click())
+            Swal.fire(
+              'Deleted!',
+              'Your Image has been deleted.',
+              'success'
+            )            
+          })      
+      }
+    })    
   }
-
 
   return (
     <div>
@@ -105,7 +110,6 @@ export default function MainImage() {
         <Container maxWidth={false} style={{paddingLeft:"70px", paddingRight:"70px"}}>
           <Box>
             <Masonry columns={matchDownSm ? 1 : matchDownMd ? 2 : matchDownLg ? 3 : matchDownXl ? 4 : 6} spacing={2} sx={{ margin: "0px" }}>
-              {console.log("w",wordsList)}
               {wordsList.map((item, index) => (
                 <div key={index} className={"flip-card"} tabIndex="0">
                   <div className={"flip-card-inner"}>
@@ -157,7 +161,7 @@ export default function MainImage() {
                     >{item.name}</h3>
                     <HighlightOffIcon
                       className="flip-card-img-delete-btn"
-                      onClick={() => deleteConfirm(item.name)}
+                      onClick={() => wordDelete(item.name)}
                     >
                     </HighlightOffIcon>
                   </div>
@@ -192,7 +196,7 @@ export default function MainImage() {
               backgroundSize:"cover"
             }}
           >
-            <img src={wordsList[imageIndex]?.image_path} onError={({ currentTarget }) => {
+            <img className="img-modal-imgbody" src={wordsList[imageIndex]?.image_path} onError={({ currentTarget }) => {
               currentTarget.onerror = null // prevents looping
               currentTarget.src="https://cdn.pixabay.com/photo/2016/10/09/17/28/closed-1726363_960_720.jpg"
             }}
@@ -225,26 +229,8 @@ export default function MainImage() {
                     setImageIndex(num => num + 1)
                   }
                 }}
-              >Next
-              </ArrowForwardIosIcon>
+              />
             </div>
-          </div>
-        </Box>
-      </Modal>
-
-      
-      {/* 삭제 확인 Modal */}
-      <Modal
-        open={del}
-        onClose={deleteConfirmClose}
-        className="delete-modal"
-      >
-        <Box className="delete-modal-box">
-          <h5 style={{position: "relative", top: "10%"}}>단어를 정말 삭제하시겠습니까?</h5>
-          <br />
-          <div>
-            <Button color="error" variant="contained" onClick={() => wordDelete(delWord)}>삭제</Button>
-            <Button color="grey" variant="contained" style={{marginLeft: "20px"}} onClick={deleteConfirmClose}>취소</Button>
           </div>
         </Box>
       </Modal>
