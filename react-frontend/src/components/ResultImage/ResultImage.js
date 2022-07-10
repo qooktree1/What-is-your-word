@@ -1,13 +1,12 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import Carousel from 'react-bootstrap/Carousel'
-import { useSelector, useDispatch } from 'react-redux'
-import { click, resultPicture, resultDefinition } from '../stateSlice/img'
-import Container from '@mui/material/Container'
-import './styles.css'
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd'
-import Alert from '@mui/material/Alert'
-import Button from '@mui/material/Button'
+import "./resultImage.css"
+import React, { useEffect, useState } from "react"
+import Carousel from "react-bootstrap/Carousel"
+import { useSelector, useDispatch } from "react-redux"
+import axios from "axios"
+import { click, resultPicture, resultDefinition } from "../../stateSlice/img"
+
+import Container from "@mui/material/Container"
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd"
 
 export default function ResultImage(){
   const selectedPicture = useSelector(state => state.img.resultPicture)
@@ -16,15 +15,14 @@ export default function ResultImage(){
   const dispatch = useDispatch()
   
   const [alertState, setAlertState] = useState(false)
-  const [s, setS] = useState(1)
-  console.log('a',s)
+  const [delayState, setDelayState] = useState(1)
   
   const postWord = (item, e) => {
     e.preventDefault()
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem("token")
     axios({
-      method: 'post',
-      url: 'http://127.0.0.1:8000/words/',
+      method: "post",
+      url: "http://127.0.0.1:8000/words/",
       data: {
         "name": selectedWord,
         "meaning": selectedDefinition,
@@ -35,39 +33,42 @@ export default function ResultImage(){
       }
     })
     .then(res => {
-      setS(s => s +1)
+      setDelayState(index => index +1)
       dispatch(resultPicture([]))
-      dispatch(resultDefinition(''))
+      dispatch(resultDefinition(""))
       dispatch(click())
     })
   }
   useEffect(() => {
-    console.log('a',s)
     setAlertState(true)
-    // alert(<Alert variant="filled" severity="info">저장되었습니다!</Alert>)
     setTimeout(() => {
       setAlertState(false)
     }, 2000)
-  }, [s])
+  }, [delayState])
   
-  console.log('a',s)
   return (
-    <div className="result-image">
+    <div className="result-img-component">
       <Container>
         <Carousel controls="true" interval={null}>
           {selectedPicture.map((item) => (
             <Carousel.Item key={item}>
-              <div className="result-container">
-                <div className="result-background" style={{background: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.7)), url(${item})`, backgroundSize:'cover'}}>
-                  <div class="section">
-                    <div class="overlay"></div>
+              <div className="result-img-container">
+                <div
+                  className="result-img-background"
+                  style={{
+                    background: `linear-gradient(rgba(255,255,255,0.4), rgba(255,255,255,0.7)), url(${item})`,
+                    backgroundSize:"cover"
+                  }}
+                >
+                  <div className="result-img-group">
+                    <div className="result-img-group-overlay"></div>
                     <LibraryAddIcon
-                      sx={{ fontSize: 40}}
-                      className="save"
+                      sx={{ fontSize: 40 }}
+                      className="result-img-group-save"
                       onClick={e => {postWord(item, e)}}
                     />                    
                     <img
-                      className="box-1"
+                      className="result-img"
                       src={item}
                       srcSet={item}
                       alt={item}
@@ -79,7 +80,7 @@ export default function ResultImage(){
             </Carousel.Item>
           ))}
         </Carousel>
-        <h5 className="result-font">{selectedDefinition}</h5>
+        <h5 className="result-definition">{selectedDefinition}</h5>
       </Container>
     </div>
   )

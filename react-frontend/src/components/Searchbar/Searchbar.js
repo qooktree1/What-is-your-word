@@ -1,19 +1,17 @@
-import { useState, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios'
-import './styles.css'
-import { resultPicture, resultDefinition, resultWord } from '../stateSlice/img'
+import "./searchbar.css"
+import React, { useEffect } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import axios from "axios"
+import { resultPicture, resultDefinition, resultWord } from "../../stateSlice/img"
 
-import SearchIcon from '@mui/icons-material/Search'
-import { Button } from '@mui/material'
+import SearchIcon from "@mui/icons-material/Search"
+import { Button } from "@mui/material"
 
 // Pexel API
 const PEXELS_IMAGE_API_KEY = process.env.REACT_APP_IMAGE_API_KEY
 
 export default function Searchbar() {
-  const selectedDefinition = useSelector(state => state.img.resultDefinition)
   const selectedWord = useSelector(state => state.img.resultWord)
-  const selectedPicture = useSelector(state => state.img.resultPicture)
   const dispatch = useDispatch()
 
   const onChange = e => {
@@ -29,7 +27,7 @@ export default function Searchbar() {
 
     // pexels
     axios({
-      method: 'GET',
+      method: "GET",
       url: `https://api.pexels.com/v1/search?query=${selectedWord}&per_page=5`,
       headers: {
         Accept: "applications/json",
@@ -51,7 +49,7 @@ export default function Searchbar() {
       })
 
     axios({
-      method: 'get',
+      method: "get",
       url: `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedWord}`,
     })
       .then(res => {
@@ -59,15 +57,15 @@ export default function Searchbar() {
         }
       )
       .catch(
-        dispatch(resultDefinition('검색 결과가 없습니다.'))
+        dispatch(resultDefinition("검색 결과가 없습니다."))
       )
   }
 
   return (
-      <form className="bar">
+      <form className="searchbar-form">
         <input className="searchbar" type="text" title="Search" onChange={onChange} />
-        <Button type="submit" className="button" onClick={ searchImg }>
-          <SearchIcon className="buttonIcon" />
+        <Button type="submit" className="btn" onClick={ searchImg }>
+          <SearchIcon className="btn-icon" />
         </Button>
       </form>
   )

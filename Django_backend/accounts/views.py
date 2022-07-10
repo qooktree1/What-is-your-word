@@ -26,7 +26,7 @@ def kakao_redirect(request):
     res = {
             'grant_type': 'authorization_code',
             'client_id': SOCIAL_OUTH_CONFIG["KAKAO_REST_API_KEY"],
-            'redirect_url': 'https://whatisyourword/api/v1/oauth/kakao/callback',
+            'redirect_url': 'http://localhost:3000/oauth/kakao/callback',
             'client_secret': SOCIAL_OUTH_CONFIG["KAKAO_SECRET_KEY"],
             'code': CODE
        }

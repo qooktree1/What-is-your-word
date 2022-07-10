@@ -1,0 +1,51 @@
+/* Searchbar form */
+.searchbar-form{
+  display: flex;
+  justify-content: end;
+  width: 50vw;
+  min-width: 250px;
+  border-radius: 10px;
+  background-color: white;
+  border: 1px solid #dcdcdc;
+}
+
+.searchbar-form:focus-within{
+  box-shadow: 1px 1px 8px 1px #dcdcdc;
+  outline: none;
+}
+.searchbar{
+  margin-left: 20px;
+  height: 43px;
+  border: none;
+  width: 45vw;
+  font-size: 16px;
+  outline: none;
+  background-color: transparent;  
+}
+.searchbar-landing {
+  top: 50vh;
+  right: 50vw;
+}
+
+/* Searchbar button */
+.btn{
+  border: none;
+  font-size: 15px;
+  border-radius: 4px;
+  outline: none;
+}
+.btn:hover{
+  color: #808080;
+  outline: none;
+  border: none;
+}
+.btn:focus{
+  border: 1px solid #4885ed;
+  padding: 9px 19px;
+}
+
+/* Searchbar button Icon */
+.btn-icon{
+  border: none;
+  outline: none;
+}
