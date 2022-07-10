@@ -1,20 +1,17 @@
-from django.shortcuts import render, get_list_or_404, get_object_or_404
+from django.shortcuts import get_object_or_404
 from .models import Word, Image
 from .serializers import WordListSerializer, ImageSerializer, WordSerializer
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from accounts.models import User
-from django.db.models import Count
 
 
 @api_view(['GET', 'POST', 'DELETE'])
 def index(request):
     user = request.user
-    print('유저', user)
+
 
     # 해당하는 유저의 단어 데이터를 가져온다.
     def get_words():
-        user = request.user
         tmp_words = Word.objects.all().filter(user=user.pk)[::-1]  # 전체 단어 중 해당 유저가 검색했던 단어만 가져오기
         serializer = WordListSerializer(tmp_words, many=True)  # JSON 형태로 응답 보내기 위해 serializer로 바꿔주기
         data = serializer.data  # -> 해당 유저가 검색했던 단어들 JSON
@@ -37,7 +34,7 @@ def index(request):
         if serializer.is_valid(raise_exception=True):
             if len(words) > 0:
                 tmp_word = Word.objects.filter(name=serializer.validated_data.get('name'))  # DB에 없는 단어면 len == 0
-                if len(tmp_word) == 0:
+                if len(tmp_word) == 0:  # 처음 저장되는 단어인 경우 단어 저장
                     word = Word()
                     word.name = serializer.validated_data.get('name')
                     word.meaning = serializer.validated_data.get('meaning')
@@ -57,9 +54,9 @@ def index(request):
                     tmp_image[0].save()
 
                 word_data.user.add(user)
-                return Response('완료!')
+                return Response({})
 
-            elif len(words) == 0:
+            elif len(words) == 0:  # 젤 처음 사용자를 위한 것
                 word = Word()
                 word.name = serializer.validated_data.get('name')
                 word.meaning = serializer.validated_data.get('meaning')
@@ -74,13 +71,14 @@ def index(request):
                 image.save()
 
                 word_data.user.add(user)
-                return Response('ㅅㅂ!!')
+                return Response({})
         
+
     def delete_word():
-        user = request.user
         word = get_object_or_404(Word, name=request.data['name'])
         word.user.remove(user)
-        return Response('삭제!')
+        return Response({})
+
 
     if request.method == 'GET':
         return get_words()

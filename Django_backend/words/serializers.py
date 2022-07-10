@@ -25,8 +25,8 @@ class WordSerializer(serializers.ModelSerializer):
             model = Image
             fields = ('image_path',)
     
-    image_path = ImageListSerializer()
-    # [{'image_path': 'asdf'}, {'image_path': 'asdf'},{'image_path': 'asdf'},{'image_path': 'asdf'}]
+    image_path = ImageListSerializer()  # {'image_path': 'asdf'}
+    
     class Meta:
         model = Word
         fields = '__all__'

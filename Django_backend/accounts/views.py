@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from backend.settings import SOCIAL_OUTH_CONFIG
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
@@ -37,7 +37,6 @@ def kakao_redirect(request):
     tokenJson = response.json()
     access_token = tokenJson.get('access_token')
     token_type = tokenJson.get('token_type')
-    refresh_token = tokenJson.get('refresh_token')
     userUrl = "https://kapi.kakao.com/v2/user/me" # 유저 정보 조회하는 uri
     auth = token_type + ' ' + access_token ## 'Bearer '여기에서 띄어쓰기 필수!!
     HEADER = {
@@ -59,29 +58,25 @@ def kakao_redirect(request):
             tmp.delete()
         
         token = Token.objects.create(user=django_user)
-
         return Response({'key': token.key, 'social_id': social_id, 'access_token': access_token, 'nickname': nickname})
+        
     else:
         tmp = Token.objects.filter(user=django_user)
         if len(tmp) > 0:
             tmp.delete()
 
         token = Token.objects.create(user=django_user)
-
         return Response({'key': token.key, 'social_id': social_id, 'access_token': access_token, 'nickname': nickname})
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny, ])
 def kakao_logout(request):
-    print(request)
     url = 'https://kapi.kakao.com//v1/user/logout/'
-    access_token = request.data.get('access_token')
     auth = "Bearer " + request.data.get('access_token')
     HEADER = {
         "Authorization": auth,
         "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
     }
-    tmp = requests.post(url, headers=HEADER).json()
     Token.objects.filter(key=request.data.get('token')).delete()
-    return Response('진짜 끝났다 고생했어')
+    return Response({})
